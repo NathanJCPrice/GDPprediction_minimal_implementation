@@ -107,7 +107,7 @@ def get_model_CVMSE(X,Y, k_folds=5):
     
 
 #Handles all the fitting logic.
-#Note that t=None just gives a regular nightlights regression.
+#Note that t=None means that just 2 regions are used.
 #See Section III.I from the paper.
 def get_model_score(df, s, t=None):
     t0 = np.linalg.norm(s)**2
