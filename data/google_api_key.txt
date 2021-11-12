@@ -1,0 +1,1 @@
+You should delete this text and put your Google Static Maps API key in here and nothing else.
