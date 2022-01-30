@@ -56,7 +56,7 @@ means_then_vars[1] = sklearn_pca.var_
 np.savetxt(means_then_vars_path, means_then_vars, delimiter=',')
 
 means = means_then_vars[0]
-std = means_then_vars[1]
+std = np.sqrt(means_then_vars[1])
 
 def normalise(data):
     return (data-means)/std
@@ -76,6 +76,7 @@ print("Normalised PCA complete. Starting transforms.")
 for country in tqdm(countries):
     features_path = os.path.join(images_main_path,features_file_pattern.format(country))
     features = np.genfromtxt(features_path, delimiter=",")
+    features = normalise(features)
     reduced_features = normalised_pca.transform(features)
     np.savetxt(os.path.join(images_main_path,reduced_features_file_pattern.format(country)), reduced_features, delimiter=',')
     
