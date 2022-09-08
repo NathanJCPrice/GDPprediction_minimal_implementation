@@ -11,7 +11,6 @@ import numpy as np
 from tqdm import tqdm
 import xml.etree.ElementTree as ET
 from itertools import product
-import geoio
 
 class GeoSampler:
     
