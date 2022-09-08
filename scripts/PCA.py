@@ -13,25 +13,25 @@ from PIL import Image
 from utils.geosampler import GeoSampler
 from utils.CountryIterator import CountryIterator
 
-root_dir = ''
+root_dir = 'H:\\GDP\\GDP_prediction_minimal_implementation\\'
 os.chdir(root_dir)
 
-images_main_path = root_dir+"daytime_imagery\\"
-clipped_images_directory = root_dir+"country_nightlight_rasters\\"
+images_main_path = "C:\\Data\\Daytime_Imagery\\Paper1\\"
+clipped_images_directory = "H:\\GDP\\"
 clipped_pattern = "Joined_VIIRS_{}.tif"
 country_list_file = "country_list.txt"
 download_list_pattern = "{}_locs.csv"
 features_file_pattern = "{}_features.csv"
 reduced_features_file_pattern = "{}_reduced.csv" #The file pattern to be used for the reduced dimension representations.
-means_then_vars_path = root_dir+"means_then_vars.csv"
-final_dataset_path = root_dir+"image_features.csv"
-long_locs_path = root_dir+"full_sample.csv" #This is the file which will contain all the modelling info. I should rename this.
+means_then_vars_path = root_dir+"means_then_vars2.csv"
+final_dataset_path = root_dir+"image_features2.csv"
+long_locs_path = root_dir+"full_sample2.csv" #This is the file which will contain all the modelling info. I should rename this.
 download_list_pattern = "{}_locs.csv"
 
 
 n_feats = 4096 #Number of dimensions of the features before dimension reduction.
 n_samps = 1000 #Number of sample points per country.
-dimensions = 5 #The number of dimensions to reduce to.
+dimensions = 12 #The number of dimensions to reduce to.
 
 countries = []
 with open(clipped_images_directory + country_list_file,"r") as country_list:
@@ -84,7 +84,7 @@ df = None
 for country in tqdm(countries):
     country_image_folder = os.path.join(images_main_path,country)
     locs = pd.read_csv(os.path.join(country_image_folder, download_list_pattern.format(country)), sep=',')
-    reduced_features_path = os.path.join(images_main_path,reduced_normalised_features_file_pattern.format(country))
+    reduced_features_path = os.path.join(images_main_path,reduced_features_file_pattern.format(country))
     reduced_features = np.genfromtxt(reduced_features_path, delimiter=",")
     temp_dataset = pd.DataFrame(data=reduced_features, index=np.array(range(0,n_samps)), columns=["N"+str(i) for i in range(0,dimensions)])
     big_locs = locs.join(temp_dataset)
@@ -163,6 +163,6 @@ def select_columns(folder, pattern, feature_indices, long_locs_path=None):
         locs_copy.insert(locs_copy.shape[1],features[i],big_dataset[:,i])
     return locs_copy
 
-long_locs = select_columns(images_main_path, reduced_features_file_pattern, np.array(range(n_dim)))
+long_locs = select_columns(images_main_path, reduced_features_file_pattern, np.array(range(dimensions)))
         
 long_locs.to_csv(long_locs_path)
